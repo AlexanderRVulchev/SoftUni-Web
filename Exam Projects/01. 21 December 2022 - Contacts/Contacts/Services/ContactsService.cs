@@ -105,6 +105,29 @@ namespace Contacts.Services
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<ContactViewModel>> GetUserTeamContacts(string userId)
+        {
+            var entities = await context.ApplicationUsersContacts
+                .Where(auc => auc.ApplicationUserId == userId)
+                .Select(auc => auc.Contact)
+                .ToArrayAsync();
+
+            var models = entities
+                .Select(e => new ContactViewModel
+                {
+                    Id = e.Id,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Address = e.Address,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber,
+                    Website = e.Website
+                })
+                .ToArray();
+                
+            return models;
+        }
     }
 }
 

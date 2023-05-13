@@ -13,5 +13,7 @@ namespace Contacts.Contracts
         Task UpdateContactAsync(int contactId, ContactViewModel model);
 
         Task AddContactToUserCollectionAsync(string userId, int contactId);
+
+        Task<IEnumerable<ContactViewModel>> GetUserTeamContacts(string userId);
     }
 }

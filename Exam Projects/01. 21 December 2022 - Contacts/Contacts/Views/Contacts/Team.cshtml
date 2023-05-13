@@ -1,8 +1,9 @@
-﻿@{
+﻿@model IEnumerable<ContactViewModel>
+
+@{
     ViewBag.Title = "My Team";
 }
 
-@*
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
@@ -21,7 +22,7 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            @foreach (var contact in Model.Contacts)
+            @foreach (var contact in Model)
             {
                 <tr>
                     <th scope="row"></th>
@@ -33,12 +34,12 @@
                     <td>@contact.Website</td>
                     <td>
                         <span style="float:left">
-                            <form class="input-group-sm" asp-controller="Contacts" asp-action="RemoveFromTeam" asp-route-contactId="@contact.ContactId">
+                            <form class="input-group-sm" asp-controller="Contacts" asp-action="RemoveFromTeam" asp-route-id="@contact.Id">
                                 <input type="submit" value="Remove from Team" class="fs-6 btn btn-success mb-3 p-2" />
                             </form>
                         </span>
                         <span style="float:right">
-                            <a asp-controller="Contacts" asp-action="Edit" asp-route-contactId="@contact.ContactId" class="btn btn-primary">Edit</a>
+                            <a asp-controller="Contacts" asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-primary">Edit</a>
                         </span>
                     </td>
                 </tr>
@@ -50,4 +51,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-*@

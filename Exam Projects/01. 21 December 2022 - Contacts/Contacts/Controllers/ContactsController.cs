@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Contacts.Controllers
 {
-    using Contacts.Data;
-    using Contacts.Data.Entities;
     using Contracts;
     using Models;
     using System.Security.Claims;
@@ -88,6 +86,13 @@ namespace Contacts.Controllers
             }
 
             return RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> Team()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var models = await service.GetUserTeamContacts(userId);
+            return View(models);
         }
     }
 }
