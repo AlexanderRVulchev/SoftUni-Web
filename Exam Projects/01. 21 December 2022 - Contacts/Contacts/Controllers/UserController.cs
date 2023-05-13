@@ -26,10 +26,11 @@ namespace Contacts.Controllers
             {
                 return RedirectToAction("All", "Contacts");
             }
-            var model = new RegisterViewModel();
+            RegisterViewModel model = new();
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -54,6 +55,41 @@ namespace Contacts.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("All", "Contacts");
+            }
+            LoginViewModel model = new();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByNameAsync(model.UserName);
+
+            if (user != null)
+            {
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("All", "Contacts");
+                }
+            }
+
+            ModelState.AddModelError("", "Invalid login!");
 
             return View(model);
         }
