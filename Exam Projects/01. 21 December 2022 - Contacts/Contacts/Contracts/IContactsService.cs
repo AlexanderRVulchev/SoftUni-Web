@@ -7,5 +7,9 @@ namespace Contacts.Contracts
         Task<IEnumerable<ContactViewModel>> GetAllContactsAsync();
 
         Task AddNewContact(ContactViewModel model);
+
+        Task<ContactViewModel?> GetContactByIdAsync(int contactId);
+
+        Task UpdateContactAsync(int contactId, ContactViewModel model);
     }
 }

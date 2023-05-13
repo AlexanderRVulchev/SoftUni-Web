@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace Contacts.Controllers
 {
     using Contacts.Data.Entities;
     using Contacts.Models;
-    using Microsoft.AspNetCore.Identity;
 
     public class UserController : Controller
     {

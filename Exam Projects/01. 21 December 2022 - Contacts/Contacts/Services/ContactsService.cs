@@ -1,11 +1,12 @@
-﻿using Contacts.Contracts;
-using Contacts.Data;
-using Contacts.Data.Entities;
-using Contacts.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Contacts.Services
 {
+    using Contracts;
+    using Data;
+    using Data.Entities;
+    using Models;
+
     public class ContactsService : IContactsService
     {
         private readonly ContactsDbContext context;
@@ -18,11 +19,11 @@ namespace Contacts.Services
         public async Task<IEnumerable<ContactViewModel>> GetAllContactsAsync()
         {
             var contactEntities = await context.Contacts.ToArrayAsync();
-            
+
             var contactModels = contactEntities
                 .Select(c => new ContactViewModel
                 {
-                    ContactId = c.Id,
+                    Id = c.Id,
                     Address = c.Address,
                     Email = c.Email,
                     FirstName = c.FirstName,
@@ -48,6 +49,48 @@ namespace Contacts.Services
             };
 
             await context.Contacts.AddAsync(entity);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<ContactViewModel?> GetContactByIdAsync(int contactId)
+        {
+            var entity = await context.Contacts.FindAsync(contactId);
+
+            if (entity != null)
+            {
+                ContactViewModel model = new()
+                {
+                    FirstName = entity.FirstName,
+                    LastName = entity.LastName,
+                    Address = entity.Address,
+                    Email = entity.Email,
+                    PhoneNumber = entity.PhoneNumber,
+                    Website = entity.Website,
+                    Id = entity.Id
+                };
+                return model;
+            }
+            return null;
+        }
+
+        public async Task UpdateContactAsync(int contactId, ContactViewModel model)
+        {
+            var entity = await context.Contacts.FindAsync(contactId);
+
+            if (entity != null)
+            {
+                entity.FirstName = model.FirstName;
+                entity.LastName = model.LastName;
+                entity.Address = model.Address;
+                entity.PhoneNumber = model.PhoneNumber;
+                entity.Email = model.Email;
+                entity.Website = model.Website;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(entity), "Missing contact.");
+            }
+
             await context.SaveChangesAsync();
         }
     }

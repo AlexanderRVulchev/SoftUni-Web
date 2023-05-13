@@ -6,7 +6,7 @@ namespace Contacts.Models
 
     public class ContactViewModel
     {
-        public int ContactId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength)]
