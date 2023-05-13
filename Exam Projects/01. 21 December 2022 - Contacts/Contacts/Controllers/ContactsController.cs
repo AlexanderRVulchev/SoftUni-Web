@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Contacts.Controllers
 {
     using Contacts.Data;
+    using Contacts.Data.Entities;
     using Contracts;
     using Models;
+    using System.Security.Claims;
 
     [Authorize]
     public class ContactsController : Controller
     {
         private readonly IContactsService service;
-        private readonly ContactsDbContext context;
 
-        public ContactsController(IContactsService _service, ContactsDbContext context)
+        public ContactsController(IContactsService _service)
         {
             this.service = _service;
-            this.context = context;
         }
 
         public async Task<IActionResult> All()
@@ -68,30 +68,26 @@ namespace Contacts.Controllers
             }
             catch
             {
-                ModelState.AddModelError("", "Edit failed");
-                return View(model);
+                return BadRequest();
             }
 
             return RedirectToAction(nameof(All));
         }
-        //[HttpPost]
-        //public IActionResult Edit(int id, ContactViewModel contactModel)
-        //{
-        //    var contact = context.Contacts.Find(id);
-        //    if (contact == null)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    contact.FirstName = contactModel.FirstName;
-        //    contact.LastName = contactModel.LastName;
-        //    contact.Address = contactModel.Address;
-        //    contact.PhoneNumber = contactModel.PhoneNumber;
-        //    contact.Website = contactModel.Website;
-        //    contact.Email = contactModel.Email;
+        public async Task<IActionResult> AddToTeam(int contactId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        //    context.SaveChanges();
-        //    return RedirectToAction("All", "Contacts");
-        //}
+            try
+            {
+                await service.AddContactToUserCollectionAsync(userId, contactId);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

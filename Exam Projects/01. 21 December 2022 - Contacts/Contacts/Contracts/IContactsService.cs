@@ -11,5 +11,7 @@ namespace Contacts.Contracts
         Task<ContactViewModel?> GetContactByIdAsync(int contactId);
 
         Task UpdateContactAsync(int contactId, ContactViewModel model);
+
+        Task AddContactToUserCollectionAsync(string userId, int contactId);
     }
 }

@@ -86,12 +86,25 @@ namespace Contacts.Services
                 entity.Email = model.Email;
                 entity.Website = model.Website;
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(entity), "Missing contact.");
-            }
 
             await context.SaveChangesAsync();
         }
+
+        public async Task AddContactToUserCollectionAsync(string userId, int contactId)
+        {
+            var contactEntity = await context.Contacts.FindAsync(contactId);
+
+            if (contactEntity != null
+                && !contactEntity.ApplicationUsersContacts.Any(auc => auc.ApplicationUserId == userId))
+            {
+                contactEntity.ApplicationUsersContacts.Add(new ApplicationUserContact
+                {
+                    ApplicationUserId = userId
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }
+
