@@ -26,6 +26,9 @@
             public const int EmailMinLength = 10;
 
             public const int PhoneNumberMaxLength = 13;
+            public const string PhoneNumberRegex = @"^(\+359|0)([ -]?)\d{3}\2\d{2}\2\d{2}\2\d{2}$";
+
+            public const string WebsiteRegex = @"^www\.[A-Za-z0-9]+\.bg$";
         }
     }
 }
