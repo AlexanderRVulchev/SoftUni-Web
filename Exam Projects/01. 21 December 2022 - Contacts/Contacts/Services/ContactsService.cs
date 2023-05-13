@@ -1,5 +1,6 @@
 ﻿using Contacts.Contracts;
 using Contacts.Data;
+using Contacts.Data.Entities;
 using Contacts.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,22 @@ namespace Contacts.Services
                 .ToArray();
 
             return contactModels;
+        }
+
+        public async Task AddNewContact(ContactViewModel model)
+        {
+            Contact entity = new()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                Address = model.Address,
+                Website = model.Website
+            };
+
+            await context.Contacts.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
     }
 }
