@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+
+using Contacts.Contracts;
 using Contacts.Data;
 using Contacts.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+using Contacts.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +25,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 })
     .AddEntityFrameworkStores<ContactsDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IContactsService, ContactsService>();
 
 var app = builder.Build();
 

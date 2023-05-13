@@ -9,20 +9,7 @@ namespace Contacts.Data
         public ContactsDbContext(DbContextOptions<ContactsDbContext> options)
             : base(options)
         {
-            this.Database.Migrate();
-            /* builder
-                .Entity<Contact>()
-                .HasData(new Contact()
-                {
-                    Id = 1,
-                    FirstName = "Bruce",
-                    LastName = "Wayne",
-                    PhoneNumber = "+359881223344",
-                    Address = "Gotham City",
-                    Email = "imbatman@batman.com",
-                    Website = "www.batman.com"
-                });
-            */
+            this.Database.Migrate();            
         }
 
         public DbSet<Contact> Contacts { get; set; } = null!;
@@ -34,6 +21,19 @@ namespace Contacts.Data
             {
                 entity.HasKey(auc => new { auc.ContactId, auc.ApplicationUserId });
             });
+
+            //builder
+            //   .Entity<Contact>()
+            //   .HasData(new Contact()
+            //   {
+            //       Id = 1,
+            //       FirstName = "Bruce",
+            //       LastName = "Wayne",
+            //       PhoneNumber = "+359881223344",
+            //       Address = "Gotham City",
+            //       Email = "imbatman@batman.com",
+            //       Website = "www.batman.com"
+            //   });
 
             base.OnModelCreating(builder);
         }
