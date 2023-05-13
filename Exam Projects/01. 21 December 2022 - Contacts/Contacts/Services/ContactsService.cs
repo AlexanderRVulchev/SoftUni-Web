@@ -36,7 +36,7 @@ namespace Contacts.Services
             return contactModels;
         }
 
-        public async Task AddNewContact(ContactViewModel model)
+        public async Task AddNewContactAsync(ContactViewModel model)
         {
             Contact entity = new()
             {
@@ -92,21 +92,20 @@ namespace Contacts.Services
 
         public async Task AddContactToUserCollectionAsync(string userId, int contactId)
         {
-            var contactEntity = await context.Contacts.FindAsync(contactId);
-
-            if (contactEntity != null
-                && !contactEntity.ApplicationUsersContacts.Any(auc => auc.ApplicationUserId == userId))
+            var entity = new ApplicationUserContact()
             {
-                contactEntity.ApplicationUsersContacts.Add(new ApplicationUserContact
-                {
-                    ApplicationUserId = userId
-                });
+                ApplicationUserId = userId,
+                ContactId = contactId
+            };
 
+            if (!context.ApplicationUsersContacts.Contains(entity))
+            {
+                context.ApplicationUsersContacts.Add(entity);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<ContactViewModel>> GetUserTeamContacts(string userId)
+        public async Task<IEnumerable<ContactViewModel>> GetUserTeamContactsAsync(string userId)
         {
             var entities = await context.ApplicationUsersContacts
                 .Where(auc => auc.ApplicationUserId == userId)
@@ -125,8 +124,27 @@ namespace Contacts.Services
                     Website = e.Website
                 })
                 .ToArray();
-                
+
             return models;
+        }
+
+        public async Task RemoveContactFromUserCollectionAsync(string userId, int contactId)
+        {
+            var user = await context.Users
+                .Include(u => u.ApplicationUsersContacts)
+                .FirstOrDefaultAsync(u => u.Id == userId);                
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user.");
+            }
+
+            var entityToRemove = user.ApplicationUsersContacts
+                .FirstOrDefault(auc => auc.ContactId == contactId)
+                     ?? throw new ArgumentException("Contact missing from user's team.");
+
+            context.ApplicationUsersContacts.Remove(entityToRemove);
+            await context.SaveChangesAsync();
         }
     }
 }

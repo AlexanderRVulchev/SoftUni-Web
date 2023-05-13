@@ -38,7 +38,7 @@ namespace Contacts.Controllers
                 return View(model);
             }
 
-            await service.AddNewContact(model);
+            await service.AddNewContactAsync(model);
             return RedirectToAction(nameof(All));
         }
 
@@ -91,8 +91,25 @@ namespace Contacts.Controllers
         public async Task<IActionResult> Team()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var models = await service.GetUserTeamContacts(userId);
+            var models = await service.GetUserTeamContactsAsync(userId);
             return View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromTeam(int contactId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                await service.RemoveContactFromUserCollectionAsync(userId, contactId);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Team));
         }
     }
 }

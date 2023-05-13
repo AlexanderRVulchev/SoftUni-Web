@@ -6,7 +6,7 @@ namespace Contacts.Contracts
     {
         Task<IEnumerable<ContactViewModel>> GetAllContactsAsync();
 
-        Task AddNewContact(ContactViewModel model);
+        Task AddNewContactAsync(ContactViewModel model);
 
         Task<ContactViewModel?> GetContactByIdAsync(int contactId);
 
@@ -14,6 +14,8 @@ namespace Contacts.Contracts
 
         Task AddContactToUserCollectionAsync(string userId, int contactId);
 
-        Task<IEnumerable<ContactViewModel>> GetUserTeamContacts(string userId);
+        Task<IEnumerable<ContactViewModel>> GetUserTeamContactsAsync(string userId);
+
+        Task RemoveContactFromUserCollectionAsync(string userId, int contactId);
     }
 }
