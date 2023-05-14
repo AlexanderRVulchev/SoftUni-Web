@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Library.Controllers
 {
@@ -7,6 +6,11 @@ namespace Library.Controllers
     {
         public IActionResult Index()
         {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                RedirectToAction("All", "Books");
+            }
+
             return View();
         }
     }

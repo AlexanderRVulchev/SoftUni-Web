@@ -10,8 +10,6 @@ namespace Library.Data
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)
         {
-            this.Database.EnsureDeleted();
-            this.Database.EnsureCreated();
         }
 
         public DbSet<Category> Categories { get; set; } = null!;

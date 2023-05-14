@@ -1,9 +1,8 @@
-﻿@*
-    @inject SignInManager<>
-    @inject UserManager<>
-*@
+﻿@using Library.Data.Entities
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
-@*
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
@@ -23,7 +22,7 @@
         </li>
     }
 </ul>
-*@
+
 
 @*
     USE THIS CODE IF YOU ARE SCAFFOLDING IDENTITY
