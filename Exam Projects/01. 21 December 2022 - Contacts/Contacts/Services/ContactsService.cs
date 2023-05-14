@@ -92,7 +92,7 @@ namespace Contacts.Services
 
         public async Task AddContactToUserCollectionAsync(string userId, int contactId)
         {
-            var entity = new ApplicationUserContact()
+            ApplicationUserContact entity = new()
             {
                 ApplicationUserId = userId,
                 ContactId = contactId
@@ -131,8 +131,9 @@ namespace Contacts.Services
         public async Task RemoveContactFromUserCollectionAsync(string userId, int contactId)
         {
             var user = await context.Users
+                .Where(u => u.Id == userId)
                 .Include(u => u.ApplicationUsersContacts)
-                .FirstOrDefaultAsync(u => u.Id == userId);                
+                .FirstOrDefaultAsync();                
 
             if (user == null)
             {

@@ -90,7 +90,6 @@ namespace Contacts.Controllers
             }
 
             ModelState.AddModelError("", "Invalid login!");
-
             return View(model);
         }
 
