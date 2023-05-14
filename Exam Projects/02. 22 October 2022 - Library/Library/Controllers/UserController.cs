@@ -95,10 +95,6 @@ namespace Library.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            if (!UserIsLoggedIn())
-            {
-                RedirectToAction("Index", "Home");
-            }
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
