@@ -61,6 +61,48 @@ namespace Library.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (UserIsLoggedIn())
+            {
+                return RedirectToAction("All", "Books");
+            }
+
+            LoginViewModel model = new();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByNameAsync(model.UserName);
+            var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("All", "Books");
+            }
+
+            ModelState.AddModelError(string.Empty, "Login failed");
+            return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            if (!UserIsLoggedIn())
+            {
+                RedirectToAction("Index", "Home");
+            }
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
         private bool UserIsLoggedIn()
             => User?.Identity?.IsAuthenticated ?? false;
     }
