@@ -59,5 +59,18 @@ namespace Library.Services
 
             return models;
         }
+
+        public async Task<IEnumerable<CategoryItemModel>> GetAllCategoriesAsync()
+        {
+            var entities = await context.Categories.ToArrayAsync();
+
+            var models = entities.Select(e => new CategoryItemModel
+            {
+                Id = e.Id,
+                Name = e.Name,
+            });
+
+            return models;
+        }
     }
 }

@@ -7,5 +7,7 @@
         Task<IEnumerable<BookViewModel>> GetAllBooksAsync();
 
         Task<IEnumerable<BookViewModel>> GetCurrentUserBooksCollectionAsync(string userId);
+
+        Task<IEnumerable<CategoryItemModel>> GetAllCategoriesAsync();
     }
 }

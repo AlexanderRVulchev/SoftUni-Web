@@ -1,9 +1,13 @@
-﻿using Library.Contracts;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Library.Controllers
 {
+    using Contracts;
+    using Models.Book;
+
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly IBookService service;
@@ -24,6 +28,19 @@ namespace Library.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var books = await service.GetCurrentUserBooksCollectionAsync(userId);
             return View(books);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            var categories = await service.GetAllCategoriesAsync();
+
+            var model = new BookFormModel
+            {
+                Categories = categories
+            };
+
+            return View(model);
         }
     }
 }

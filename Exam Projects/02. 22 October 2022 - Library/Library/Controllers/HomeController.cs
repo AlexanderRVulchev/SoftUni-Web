@@ -8,7 +8,7 @@ namespace Library.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                RedirectToAction("All", "Books");
+                return RedirectToAction("All", "Books");
             }
 
             return View();
