@@ -4,6 +4,7 @@ namespace Library.Services
 {
     using Contracts;
     using Data;
+    using Data.Entities;
     using Models.Book;
 
     public class BookService : IBookService
@@ -71,6 +72,22 @@ namespace Library.Services
             });
 
             return models;
+        }
+
+        public async Task AddNewBookAsync(BookFormModel model)
+        {
+            var book = new Book
+            {
+                Author = model.Author,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                Rating = model.Rating,
+                Title = model.Title
+            };
+
+            context.Books.Add(book);
+            await context.SaveChangesAsync();            
         }
     }
 }

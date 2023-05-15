@@ -9,5 +9,7 @@
         Task<IEnumerable<BookViewModel>> GetCurrentUserBooksCollectionAsync(string userId);
 
         Task<IEnumerable<CategoryItemModel>> GetAllCategoriesAsync();
+
+        Task AddNewBookAsync(BookFormModel model);
     }
 }

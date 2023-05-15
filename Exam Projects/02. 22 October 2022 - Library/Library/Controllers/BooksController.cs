@@ -42,5 +42,25 @@ namespace Library.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(BookFormModel model)
+        {
+            var validCategories = await service.GetAllCategoriesAsync();
+
+            if (!validCategories.Any(c => c.Id == model.CategoryId))
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Invalid category Id");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = validCategories;
+                return View(model);
+            }
+
+            await service.AddNewBookAsync(model);
+            return RedirectToAction(nameof(All));
+        }
     }
 }
