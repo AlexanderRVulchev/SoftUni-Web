@@ -13,5 +13,7 @@
         public decimal Rating { get; set; }
         
         public string Category { get; set; } = null!;
+
+        public string Description { get; set; } = null!;
     }
 }

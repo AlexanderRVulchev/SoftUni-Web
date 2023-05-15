@@ -1,11 +1,14 @@
-﻿@{
+﻿@using Library.Models.Book
+@model IEnumerable<BookViewModel>
+
+@{
     ViewBag.Title = "My Books";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-@*
+
 <div class="text-center row">
     @foreach (var book in Model)
     {
@@ -25,4 +28,3 @@
         </div>
     }
 </div>
-*@

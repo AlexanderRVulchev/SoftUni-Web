@@ -1,5 +1,6 @@
 ﻿using Library.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Library.Controllers
 {
@@ -15,6 +16,13 @@ namespace Library.Controllers
         public async Task<IActionResult> All()
         {
             var books = await service.GetAllBooksAsync();
+            return View(books);
+        }
+
+        public async Task<IActionResult> Mine()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var books = await service.GetCurrentUserBooksCollectionAsync(userId);
             return View(books);
         }
     }
