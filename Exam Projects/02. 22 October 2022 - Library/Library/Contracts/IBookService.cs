@@ -12,6 +12,8 @@
 
         Task AddNewBookAsync(BookFormModel model);
 
-        Task AddBookToUserCollection(string userId, int bookId);
+        Task AddBookToUserCollectionAsync(string userId, int bookId);
+
+        Task RemoveBookFromUserCollectionAsync(string userId, int bookId);
     }
 }

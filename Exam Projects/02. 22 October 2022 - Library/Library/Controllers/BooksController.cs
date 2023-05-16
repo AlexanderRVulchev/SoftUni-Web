@@ -69,7 +69,7 @@ namespace Library.Controllers
 
             try
             {
-                await service.AddBookToUserCollection(userId, bookId);
+                await service.AddBookToUserCollectionAsync(userId, bookId);
             }
             catch
             {
@@ -77,6 +77,22 @@ namespace Library.Controllers
             }
 
             return RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> RemoveFromCollection(int bookId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                await service.RemoveBookFromUserCollectionAsync(userId, bookId);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Mine));
         }
     }
 }

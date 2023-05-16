@@ -90,12 +90,12 @@ namespace Library.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task AddBookToUserCollection(string userId, int bookId)
+        public async Task AddBookToUserCollectionAsync(string userId, int bookId)
         {
             var book = await context.Books
                 .Include(b => b.ApplicationUsersBooks)
                 .FirstOrDefaultAsync(b => b.Id == bookId)
-                    ?? throw new ArgumentNullException(nameof(bookId));
+                    ?? throw new ArgumentNullException(nameof(bookId), "Invalid book id.");
 
             if (!book.ApplicationUsersBooks.Any(aub => aub.ApplicationUserId == userId))
             {
@@ -106,6 +106,24 @@ namespace Library.Services
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task RemoveBookFromUserCollectionAsync(string userId, int bookId)
+        {
+            var book = await context.Books
+                .Include(b => b.ApplicationUsersBooks)
+                .FirstOrDefaultAsync(b => b.Id == bookId)
+                    ?? throw new ArgumentNullException(nameof(bookId), "Invalid book id.");
+
+            var entityToRemove = book.ApplicationUsersBooks
+                .FirstOrDefault(aub => aub.ApplicationUserId == userId);
+                    
+            if (entityToRemove != null)
+            {
+                book.ApplicationUsersBooks.Remove(entityToRemove);
+            }
+
+            await context.SaveChangesAsync();
         }
     }
 }
