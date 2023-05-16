@@ -87,7 +87,25 @@ namespace Library.Services
             };
 
             context.Books.Add(book);
-            await context.SaveChangesAsync();            
+            await context.SaveChangesAsync();
+        }
+
+        public async Task AddBookToUserCollection(string userId, int bookId)
+        {
+            var book = await context.Books
+                .Include(b => b.ApplicationUsersBooks)
+                .FirstOrDefaultAsync(b => b.Id == bookId)
+                    ?? throw new ArgumentNullException(nameof(bookId));
+
+            if (!book.ApplicationUsersBooks.Any(aub => aub.ApplicationUserId == userId))
+            {
+                book.ApplicationUsersBooks.Add(new ApplicationUserBook
+                {
+                    ApplicationUserId = userId
+                });
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

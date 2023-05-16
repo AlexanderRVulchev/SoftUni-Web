@@ -6,6 +6,7 @@ namespace Library.Controllers
     using Data.Entities;
     using Models.User;
     using System;
+    using System.Security.Claims;
 
     public class UserController : Controller
     {

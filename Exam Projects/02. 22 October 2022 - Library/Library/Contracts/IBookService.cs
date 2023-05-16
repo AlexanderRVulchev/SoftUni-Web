@@ -11,5 +11,7 @@
         Task<IEnumerable<CategoryItemModel>> GetAllCategoriesAsync();
 
         Task AddNewBookAsync(BookFormModel model);
+
+        Task AddBookToUserCollection(string userId, int bookId);
     }
 }

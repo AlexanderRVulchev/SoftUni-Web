@@ -62,5 +62,21 @@ namespace Library.Controllers
             await service.AddNewBookAsync(model);
             return RedirectToAction(nameof(All));
         }
+
+        public async Task<IActionResult> AddToCollection(int bookId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                await service.AddBookToUserCollection(userId, bookId);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }
