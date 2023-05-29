@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HouseRentingSystem.Infrastructure;
 
 using Data;
+using Data.Configuration;
 
 public class ApplicationDbContext : IdentityDbContext
 {
@@ -21,6 +22,10 @@ public class ApplicationDbContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.ApplyConfiguration(new UserConfiguration());
+        builder.ApplyConfiguration(new AgentConfiguration());
+        builder.ApplyConfiguration(new CategoryConfiguration());
+        builder.ApplyConfiguration(new HouseConfiguration());
         base.OnModelCreating(builder);
     }
 }
