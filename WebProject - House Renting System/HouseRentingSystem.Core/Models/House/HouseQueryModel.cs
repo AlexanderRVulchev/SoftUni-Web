@@ -1,6 +1,6 @@
 ﻿namespace HouseRentingSystem.Core.Models.House
 {
-    public class AllHousesQueryModel
+    public class HouseQueryModel
     {
     }
 }
