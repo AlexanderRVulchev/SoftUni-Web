@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace HouseRentingSystem.Infrastructure.Data.Common
-{    
+{
     public class Repository : IRepository
     {
         protected DbContext Context { get; set; }
 
-       
+
         protected DbSet<T> DbSet<T>() where T : class
         {
             return this.Context.Set<T>();
@@ -19,7 +19,7 @@ namespace HouseRentingSystem.Infrastructure.Data.Common
             Context = context;
         }
 
-              public async Task AddAsync<T>(T entity) where T : class
+        public async Task AddAsync<T>(T entity) where T : class
         {
             await DbSet<T>().AddAsync(entity);
         }

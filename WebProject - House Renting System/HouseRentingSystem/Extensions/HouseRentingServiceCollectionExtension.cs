@@ -1,4 +1,6 @@
-﻿using HouseRentingSystem.Infrastructure.Data.Common;
+﻿using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Services;
+using HouseRentingSystem.Infrastructure.Data.Common;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -7,6 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IHouseService, HouseService>();
 
             return services;
         }
