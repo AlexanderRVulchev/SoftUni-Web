@@ -50,9 +50,28 @@ namespace HouseRentingSystem.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Edit(int id, HouseModel model)
         {
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Rent(int id)
+        {
+            return RedirectToAction(nameof(Mine));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Leave(int id)
+        {
+            return RedirectToAction(nameof(Mine));
         }
     }
 }
