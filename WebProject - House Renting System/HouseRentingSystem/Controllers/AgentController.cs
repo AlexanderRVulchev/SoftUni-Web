@@ -22,10 +22,13 @@
         {
             if (await agentService.ExistsById(User.Id()))
             {
-                return BadRequest();
+                TempData["ErrorMessage"] = "Вече сте агент";
+                return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            TempData["SuccessMessage"] = "Вече сте агент";
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
