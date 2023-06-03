@@ -4,10 +4,18 @@ using Microsoft.AspNetCore.Authorization;
 namespace HouseRentingSystem.Controllers
 {
     using Core.Models.House;
+    using Core.Contracts;
 
     [Authorize]
     public class HouseController : Controller
     {
+        private readonly IHouseService houseService;
+
+        public HouseController(IHouseService _houseService)
+        {
+            this.houseService = _houseService;
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> All()
         {
