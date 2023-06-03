@@ -10,6 +10,8 @@
 
         Task<bool> CategoryExists(int categoryId);
 
-        Task<int> Create(HouseModel model);
+        Task<int> Create(HouseModel model, int agentId);
+
+        Task<int> GetAgentId(string userId);
     }
 }

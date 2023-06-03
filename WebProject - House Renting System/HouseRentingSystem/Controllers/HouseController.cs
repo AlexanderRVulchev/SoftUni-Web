@@ -78,9 +78,12 @@ namespace HouseRentingSystem.Controllers
                 return View(model);
             }
 
-            int id = await houseService.Create(model);
+            string userId = User.Id();
+            int agentId = await houseService.GetAgentId(userId);
 
-            return RedirectToAction(nameof(Details), new { id });
+            int id = await houseService.Create(model, agentId);
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         [HttpGet]

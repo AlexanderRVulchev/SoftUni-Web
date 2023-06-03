@@ -34,7 +34,7 @@
                          .AnyAsync(c => c.Id == categoryId);
 
 
-        public async Task<int> Create(HouseModel model)
+        public async Task<int> Create(HouseModel model, int agentId)
         {
             var house = new House()
             {                
@@ -43,7 +43,8 @@
                 CategoryId = model.CategoryId,
                 ImageUrl = model.ImageUrl,
                 Title = model.Title,
-                PricePerMonth = model.PricePerMonth
+                PricePerMonth = model.PricePerMonth,
+                AgentId = agentId
             };
 
             await repo.AddAsync<House>(house);
@@ -51,6 +52,10 @@
 
             return house.Id;
         }
+
+        public async Task<int> GetAgentId(string userId)
+            => (await repo.AllReadonly<Agent>()
+                .FirstOrDefaultAsync(a => a.UserId == userId))?.Id ?? 0;
 
         public async Task<IEnumerable<HouseHomeModel>> LastThreeHouses()
         {
