@@ -6,7 +6,7 @@
     using Infrastructure.Data.Common;
 
     using Microsoft.EntityFrameworkCore;
-
+    using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -19,6 +19,62 @@
             this.repo = _repo;
         }
 
+        public async Task<HouseQueryModel> All(
+            string? category = null,
+            string? searchTerm = null,
+            HouseSorting sorting = HouseSorting.Newest,
+            int currentPage = 1,
+            int housesPerPage = 1)
+        {
+            HouseQueryModel result = new();
+            var houses = repo.AllReadonly<House>();
+
+            if (!String.IsNullOrEmpty(category))
+            {
+                houses = houses.Where(h => h.Category.Name == category);
+            }
+
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = $"{searchTerm.ToLower()}";
+                houses = houses.Where(h => EF.Functions.Like(h.Title.ToLower(), searchTerm)
+                    || EF.Functions.Like(h.Description.ToLower(), searchTerm)
+                    || EF.Functions.Like(h.Address.ToLower(), searchTerm));
+            }
+
+            houses = sorting switch
+            {
+                HouseSorting.Price => houses
+                    .OrderBy(h => h.PricePerMonth),
+                HouseSorting.NotRentedFirst => houses
+                    .OrderBy(h => h.RenterId != null)
+                    .ThenByDescending(h => h.Id),
+                _ => houses.OrderByDescending(h => h.Id)
+            };
+
+            var housesResult = await houses
+                .Skip((currentPage - 1) * housesPerPage)
+                .Take(housesPerPage)
+                .Select(h => new HouseServiceModel
+                {
+                    Address = h.Address,
+                    Id = h.Id,
+                    ImageUrl = h.ImageUrl,
+                    isRented = h.RenterId != null,
+                    PricePerMonth = h.PricePerMonth,
+                    Title = h.Title
+                })
+                .ToListAsync();
+
+            int housesCount = houses.Count();
+
+            return new HouseQueryModel
+            {
+                Houses = housesResult,
+                TotalHousesCount = housesCount
+            };
+        }
+
         public async Task<IEnumerable<HouseCategoryModel>> AllCategories()
             => await repo.All<Category>()
                 .OrderBy(c => c.Name)
@@ -29,6 +85,11 @@
                 })
                 .ToArrayAsync();
 
+        public Task<IEnumerable<string>> AllCategoriesNames()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> CategoryExists(int categoryId)
             => await repo.AllReadonly<Category>()
                          .AnyAsync(c => c.Id == categoryId);
@@ -37,7 +98,7 @@
         public async Task<int> Create(HouseModel model, int agentId)
         {
             var house = new House()
-            {                
+            {
                 Description = model.Description,
                 Address = model.Address,
                 CategoryId = model.CategoryId,
