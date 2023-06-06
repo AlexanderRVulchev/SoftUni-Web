@@ -66,7 +66,7 @@
                 })
                 .ToListAsync();
 
-            int housesCount = houses.Count();
+            int housesCount = await houses.CountAsync();
 
             return new HouseQueryModel
             {
@@ -85,10 +85,11 @@
                 })
                 .ToArrayAsync();
 
-        public Task<IEnumerable<string>> AllCategoriesNames()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<string>> AllCategoriesNames()
+            => await repo.AllReadonly<Category>()
+                .Select(c => c.Name)
+                .Distinct()
+                .ToArrayAsync();
 
         public async Task<bool> CategoryExists(int categoryId)
             => await repo.AllReadonly<Category>()
