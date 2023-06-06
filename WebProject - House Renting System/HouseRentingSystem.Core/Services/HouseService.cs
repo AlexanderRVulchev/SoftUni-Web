@@ -60,7 +60,7 @@
                     Address = h.Address,
                     Id = h.Id,
                     ImageUrl = h.ImageUrl,
-                    isRented = h.RenterId != null,
+                    IsRented = h.RenterId != null,
                     PricePerMonth = h.PricePerMonth,
                     Title = h.Title
                 })

@@ -6,6 +6,7 @@ namespace HouseRentingSystem.Controllers
     using Core.Contracts;
     using Core.Models.House;
     using Extensions;
+    using HouseRentingSystem.Models;
 
     [Authorize]
     public class HouseController : Controller
@@ -22,9 +23,20 @@ namespace HouseRentingSystem.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery]AllHousesQueryModel query)
         {
-            return View();
+            var result = await houseService.All(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllHousesQueryModel.HousesPerPage);
+                
+            query.TotalHousesCount = result.TotalHousesCount;
+            query.Categories = await houseService.AllCategoriesNames();
+            query.Houses = result.Houses;
+
+            return View(query);
         }
 
 

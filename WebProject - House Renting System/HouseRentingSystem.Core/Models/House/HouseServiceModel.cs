@@ -17,6 +17,6 @@ namespace HouseRentingSystem.Core.Models.House
         public decimal PricePerMonth { get; init; }
 
         [DisplayName("Is Rented")]
-        public bool isRented { get; init; }
+        public bool IsRented { get; init; }
     }
 }
