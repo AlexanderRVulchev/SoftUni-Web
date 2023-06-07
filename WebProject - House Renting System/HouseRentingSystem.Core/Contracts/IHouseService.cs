@@ -23,5 +23,9 @@
             );
 
         Task<IEnumerable<string>> AllCategoriesNames();
+
+        Task<IEnumerable<HouseServiceModel>> AllHousesByAgentId(int agentId);
+
+        Task<IEnumerable<HouseServiceModel>> AllHousesByUserId(string userId);
     }
 }

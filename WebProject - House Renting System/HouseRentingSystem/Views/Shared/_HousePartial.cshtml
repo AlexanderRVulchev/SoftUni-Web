@@ -3,8 +3,6 @@
     <div class="card mb-3">
         <img class="card-img-top" src="@Model.ImageUrl" alt="House Image">
         <div class="card-body text-center">
-            © SoftUni – about.softuni.bg. Copyrighted document. Unauthorized copy, reproduction or use is not permitted.
-            Follow us: Page 54 of 78
             <h4>@Model.Title</h4>
             <h6>Address: <b>@Model.Address</b></h6>
             <h6>
@@ -13,25 +11,24 @@
             </h6>
             <h6>(@(Model.IsRented ? "Rented" : "Not Rented"))</h6>
             <br />
-            <a asp-controller="Houses" asp-action="Details" asp-route-id="@Model.Id"
-               class="btn btn-success">Details</a>
+            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
             @if (this.User.Identity.IsAuthenticated)
             {
-                <a asp-controller="Houses" asp-action="Edit" asp-routeid="@Model.Id"
+                <a asp-controller="House" asp-action="Edit" asp-routeid="@Model.Id"
                class="btn btn-warning">Edit</a>
-                <a asp-controller="Houses" asp-action="Delete" asp-routeid="@Model.Id"
+                <a asp-controller="House" asp-action="Delete" asp-routeid="@Model.Id"
                class="btn btn-danger">Delete</a>
                 <p></p>
                 @if (!Model.IsRented)
                 {
-                    <form class="input-group-sm" asp-controller="Houses"
+                    <form class="input-group-sm" asp-controller="House"
                   asp-action="Rent" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Rent" />
                     </form>
                 }
                 else
                 {
-                    <form asp-controller="Houses" asp-action="Leave"
+                    <form asp-controller="House" asp-action="Leave"
                   asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Leave" />
                     </form>

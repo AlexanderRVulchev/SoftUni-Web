@@ -6,7 +6,6 @@
     using Infrastructure.Data.Common;
 
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -91,10 +90,38 @@
                 .Distinct()
                 .ToArrayAsync();
 
+        public async Task<IEnumerable<HouseServiceModel>> AllHousesByAgentId(int agentId)
+            => await repo.All<House>()
+            .Where(c => c.AgentId == agentId)
+            .Select(c => new HouseServiceModel
+            {
+                Address = c.Address,
+                Id = c.Id,
+                ImageUrl = c.ImageUrl,
+                IsRented = c.RenterId == null,
+                PricePerMonth = c.PricePerMonth,
+                Title = c.Title
+            })
+            .ToArrayAsync();
+
+
+        public async Task<IEnumerable<HouseServiceModel>> AllHousesByUserId(string userId)
+             => await repo.All<House>()
+            .Where(c => c.RenterId == userId)
+            .Select(c => new HouseServiceModel
+            {           
+                Address = c.Address,
+                Id = c.Id,
+                ImageUrl = c.ImageUrl,
+                IsRented = c.RenterId == null,
+                PricePerMonth = c.PricePerMonth,
+                Title = c.Title
+            })
+            .ToArrayAsync();        
+
         public async Task<bool> CategoryExists(int categoryId)
             => await repo.AllReadonly<Category>()
                          .AnyAsync(c => c.Id == categoryId);
-
 
         public async Task<int> Create(HouseModel model, int agentId)
         {
