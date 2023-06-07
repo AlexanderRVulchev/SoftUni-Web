@@ -27,5 +27,9 @@
         Task<IEnumerable<HouseServiceModel>> AllHousesByAgentId(int agentId);
 
         Task<IEnumerable<HouseServiceModel>> AllHousesByUserId(string userId);
+
+        Task<HouseDetailsModel> HouseDetailsbyId(int id);
+
+        Task<bool> Exists(int id);
     }
 }
