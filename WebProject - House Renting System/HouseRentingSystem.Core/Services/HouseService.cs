@@ -143,6 +143,20 @@
             return house.Id;
         }
 
+        public async Task Edit(int houseId, HouseModel model)
+        {
+            var house = await repo.GetByIdAsync<House>(houseId);
+
+            house.Title = model.Title;
+            house.Address = model.Address;
+            house.Description = model.Description;
+            house.ImageUrl = model.ImageUrl;
+            house.PricePerMonth = model.PricePerMonth;
+            house.CategoryId = model.CategoryId;
+
+            await repo.SaveChangesAsync();
+        }
+
         public async Task<bool> Exists(int id)
             => await repo.AllReadonly<House>()
                 .AnyAsync(h => h.Id == id);
@@ -150,6 +164,25 @@
         public async Task<int> GetAgentId(string userId)
             => (await repo.AllReadonly<Agent>()
                 .FirstOrDefaultAsync(a => a.UserId == userId))?.Id ?? 0;
+
+        public async Task<int> GetHouseCategoryId(int houseId)
+            => (await repo.GetByIdAsync<House>(houseId)).CategoryId;
+                
+
+        public async Task<bool> HasAgentWithId(int houseId, string currentUserId)
+        {
+            var house = await repo.AllReadonly<House>()
+                .Where(h => h.Id == houseId)
+                .Include(h => h.Agent)
+                .FirstOrDefaultAsync();
+
+            if (house?.Agent != null && house.Agent.UserId == currentUserId)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public async Task<HouseDetailsModel> HouseDetailsbyId(int id)
             => await repo.AllReadonly<House>()
