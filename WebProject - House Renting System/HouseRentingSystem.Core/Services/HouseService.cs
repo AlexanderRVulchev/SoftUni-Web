@@ -1,12 +1,13 @@
 ﻿namespace HouseRentingSystem.Core.Services
 {
     using Contracts;
+    using Core.Models.Agent;
     using Core.Models.House;
-    using HouseRentingSystem.Core.Models.Agent;
     using Infrastructure.Data;
     using Infrastructure.Data.Common;
 
     using Microsoft.EntityFrameworkCore;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -141,6 +142,17 @@
             await repo.SaveChangesAsync();
 
             return house.Id;
+        }
+
+        public async Task Delete(int houseId)
+        {
+            var house = await repo.GetByIdAsync<House>(houseId);
+
+            if (house != null)
+            {
+                await repo.DeleteAsync<House>(houseId);
+                await repo.SaveChangesAsync();
+            }
         }
 
         public async Task Edit(int houseId, HouseModel model)

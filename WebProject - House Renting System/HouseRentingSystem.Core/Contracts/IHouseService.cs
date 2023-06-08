@@ -37,5 +37,7 @@
         Task<bool> HasAgentWithId(int houseId, string currentUserId);
 
         Task<int> GetHouseCategoryId(int houseId);
+
+        Task Delete(int houseId);
     }
 }
