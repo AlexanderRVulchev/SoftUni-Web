@@ -6,7 +6,6 @@ namespace HouseRentingSystem.Controllers
     using Core.Contracts;
     using Core.Models.House;
     using Extensions;
-    using HouseRentingSystem.Infrastructure.Data;
     using HouseRentingSystem.Models;
 
     [Authorize]
@@ -229,6 +228,23 @@ namespace HouseRentingSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Rent(int id)
         {
+            if (!await houseService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            if (await agentService.ExistsById(User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (await houseService.IsRented(id))
+            {
+                return BadRequest();
+            }
+
+            await houseService.Rent(id, User.Id());
+
             return RedirectToAction(nameof(Mine));
         }
 

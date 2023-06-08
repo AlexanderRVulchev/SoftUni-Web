@@ -217,6 +217,26 @@
                 })
                 .FirstAsync();
 
+        public async Task<bool> IsRented(int id)
+            => (await repo.GetByIdAsync<House>(id)).RenterId != null;        
+
+        public async Task<bool> IsRentedByUserWithId(int houseId, string userId)
+        {
+            var house = await repo.GetByIdAsync<House>(houseId);
+
+            if (house == null)
+            {
+                return false;
+            }
+
+            if (house.RenterId != userId)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<IEnumerable<HouseHomeModel>> LastThreeHouses()
         {
             return await repo.AllReadonly<House>()
@@ -229,6 +249,13 @@
                 })
                 .Take(3)
                 .ToArrayAsync();
+        }
+
+        public async Task Rent(int houseId, string userId)
+        {
+            var house = await repo.GetByIdAsync<House>(houseId);
+            house.RenterId = userId;
+            await repo.SaveChangesAsync();
         }
     }
 }
