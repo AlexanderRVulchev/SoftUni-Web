@@ -15,7 +15,7 @@ namespace HouseRentingSystem.Controllers
         private readonly IAgentService agentService;
 
         public HouseController(
-            IHouseService _houseService, 
+            IHouseService _houseService,
             IAgentService _agentService)
         {
             this.houseService = _houseService;
@@ -23,7 +23,7 @@ namespace HouseRentingSystem.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> All([FromQuery]AllHousesQueryModel query)
+        public async Task<IActionResult> All([FromQuery] AllHousesQueryModel query)
         {
             var result = await houseService.All(
                 query.Category,
@@ -31,7 +31,7 @@ namespace HouseRentingSystem.Controllers
                 query.Sorting,
                 query.CurrentPage,
                 AllHousesQueryModel.HousesPerPage);
-                
+
             query.TotalHousesCount = result.TotalHousesCount;
             query.Categories = await houseService.AllCategoriesNames();
             query.Houses = result.Houses;
@@ -60,7 +60,7 @@ namespace HouseRentingSystem.Controllers
 
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
-        {            
+        {
 
             if (!await houseService.Exists(id))
             {
@@ -68,7 +68,7 @@ namespace HouseRentingSystem.Controllers
             }
 
             var houseModel = await houseService.HouseDetailsbyId(id);
-            
+
             return View(houseModel);
         }
 
@@ -118,7 +118,30 @@ namespace HouseRentingSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = new HouseModel();
+            if (!await houseService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await houseService.HasAgentWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            var house = await houseService.HouseDetailsbyId(id);
+            var categoryId = await houseService.GetHouseCategoryId(id);
+
+            var model = new HouseModel
+            {
+                Address = house.Address,
+                Description = house.Description,
+                CategoryId = categoryId,
+                Id = id,
+                ImageUrl = house.ImageUrl,
+                PricePerMonth = house.PricePerMonth,
+                Title = house.Title,
+                HouseCategories = await houseService.AllCategories()
+            };
 
             return View(model);
         }
@@ -126,7 +149,30 @@ namespace HouseRentingSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, HouseModel model)
         {
-            return RedirectToAction(nameof(Details), new { id });
+            if (!await houseService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await houseService.HasAgentWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if (!await houseService.CategoryExists(model.CategoryId))
+            {
+                ModelState.AddModelError("", "Category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.HouseCategories = await houseService.AllCategories();
+                return View(model);
+            }
+
+            await houseService.Edit(id, model);
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         [HttpPost]
