@@ -251,7 +251,8 @@
                 {
                     Id = h.Id,
                     ImageUrl = h.ImageUrl,
-                    Title = h.Title
+                    Title = h.Title,
+                    Address = h.Address,
                 })
                 .Take(3)
                 .ToArrayAsync();
