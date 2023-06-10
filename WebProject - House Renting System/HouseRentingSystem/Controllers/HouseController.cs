@@ -230,17 +230,17 @@ namespace HouseRentingSystem.Controllers
         {
             if (!await houseService.Exists(id))
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
             if (await agentService.ExistsById(User.Id()))
             {
-                return Unauthorized();
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
 
             if (await houseService.IsRented(id))
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
             await houseService.Rent(id, User.Id());
@@ -251,6 +251,19 @@ namespace HouseRentingSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Leave(int id)
         {
+            if (!await houseService.Exists(id)
+                || !await houseService.IsRented(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+            
+            if (!await houseService.IsRentedByUserWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            await houseService.Leave(id);
+
             return RedirectToAction(nameof(Mine));
         }
     }

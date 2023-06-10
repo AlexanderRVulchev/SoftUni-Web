@@ -3,6 +3,7 @@
     using Contracts;
     using Core.Models.Agent;
     using Core.Models.House;
+    using HouseRentingSystem.Core.Exceptions;
     using Infrastructure.Data;
     using Infrastructure.Data.Common;
 
@@ -15,9 +16,14 @@
     {
         private readonly IRepository repo;
 
-        public HouseService(IRepository _repo)
+        private readonly IGuard guard;
+
+        public HouseService(
+            IRepository _repo,
+            IGuard _guard)
         {
             this.repo = _repo;
+            this.guard = _guard;
         }
 
         public async Task<HouseQueryModel> All(
@@ -179,7 +185,7 @@
 
         public async Task<int> GetHouseCategoryId(int houseId)
             => (await repo.GetByIdAsync<House>(houseId)).CategoryId;
-                
+
 
         public async Task<bool> HasAgentWithId(int houseId, string currentUserId)
         {
@@ -218,7 +224,7 @@
                 .FirstAsync();
 
         public async Task<bool> IsRented(int id)
-            => (await repo.GetByIdAsync<House>(id)).RenterId != null;        
+            => (await repo.GetByIdAsync<House>(id)).RenterId != null;
 
         public async Task<bool> IsRentedByUserWithId(int houseId, string userId)
         {
@@ -251,9 +257,26 @@
                 .ToArrayAsync();
         }
 
+        public async Task Leave(int houseId)
+        {
+            var house = await repo.GetByIdAsync<House>(houseId);
+            guard.AgainstNull(house, "House cannot be found");
+            house.RenterId = null;
+
+            await repo.SaveChangesAsync();
+        }
+
         public async Task Rent(int houseId, string userId)
         {
             var house = await repo.GetByIdAsync<House>(houseId);
+
+            if (house != null && userId != null)
+            {
+                throw new ArgumentException("House is already rented");
+            }
+
+            guard.AgainstNull(house, "House cannot be found");
+
             house.RenterId = userId;
             await repo.SaveChangesAsync();
         }
