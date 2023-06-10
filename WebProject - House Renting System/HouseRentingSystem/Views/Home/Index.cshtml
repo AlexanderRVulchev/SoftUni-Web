@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<HouseHomeModel>
+@inject IAgentService agents
 
 @{
     ViewData["Title"] = "Home Page";
@@ -15,7 +16,8 @@
         </p>
         <hr class="my-4">
         <p class="lead">
-            @if (this.User?.Identity != null && this.User.Identity.IsAuthenticated)
+            @if (User?.Identity?.IsAuthenticated ?? false
+           && await agents.ExistsById(User.Id()))
             {
                 <a asp-controller="House" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add House</a>
             }

@@ -1,4 +1,7 @@
-﻿@model HouseDetailsModel
+﻿@inject IHouseService houses
+@inject IAgentService agents
+
+@model HouseDetailsModel
 @{
     ViewBag.Title = "House Details";
 }
@@ -23,21 +26,21 @@
             <div class="form-inline">
                 @if (this.User?.Identity?.IsAuthenticated ?? false)
                 {
-                    <a class="btn btn-warning" asp-controller="House" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="House" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                    @if (!Model.IsRented)
+                    @if (await agents.ExistsById(User.Id()))
                     {
-                        <form class="ml-2" asp-controller="House" asp-action="Rent" asp-route-id="@Model.Id"
-                      method="post">
+                        <a class="btn btn-warning" asp-controller="House" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="ml-2 btn btn-danger" asp-controller="House" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                    }
+                    @if (!Model.IsRented && !await agents.ExistsById(User.Id()))
+                    {
+                        <form class="ml-2" asp-controller="House" asp-action="Rent" asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit" value="Rent" />
                         </form>
                     }
-                    else
+                    else if (await houses.IsRentedByUserWithId(Model.Id, User.Id()))
                     {
-                        <form class="ml-2" asp-controller="House" aspaction="Leave"
-                      asp-route-id="@Model.Id" method="post">
-                            <input class="btn btn-primary" type="submit"
-                           value="Leave" />
+                        <form class="ml-2" asp-controller="House" aspaction="Leave" asp-route-id="@Model.Id" method="post">
+                            <input class="btn btn-primary" type="submit" value="Leave" />
                         </form>
                     }
                 }
