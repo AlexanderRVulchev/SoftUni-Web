@@ -121,9 +121,9 @@
                 Address = c.Address,
                 Id = c.Id,
                 ImageUrl = c.ImageUrl,
-                IsRented = c.RenterId == null,
+                IsRented = c.RenterId != null,
                 PricePerMonth = c.PricePerMonth,
-                Title = c.Title
+                Title = c.Title                
             })
             .ToArrayAsync();
 
@@ -270,7 +270,7 @@
         {
             var house = await repo.GetByIdAsync<House>(houseId);
 
-            if (house != null && userId != null)
+            if (house.RenterId != null && userId != null)
             {
                 throw new ArgumentException("House is already rented");
             }
