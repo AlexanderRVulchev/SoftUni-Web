@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HouseRentingSystem.Infrastructure.Data
@@ -17,6 +16,6 @@ namespace HouseRentingSystem.Infrastructure.Data
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = null!;
 
-        public IdentityUser User { get; set; } = null!;
+        public User User { get; set; } = null!;
     }
 }

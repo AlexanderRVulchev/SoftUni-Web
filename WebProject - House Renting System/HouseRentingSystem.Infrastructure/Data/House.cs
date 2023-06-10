@@ -43,6 +43,6 @@ namespace HouseRentingSystem.Infrastructure.Data
         
         public string? RenterId { get; set; }
 
-        public IdentityUser? Renter { get; set; }
+        public User? Renter { get; set; }
     }
 }
