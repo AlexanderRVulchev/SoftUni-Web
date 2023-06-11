@@ -17,7 +17,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -51,6 +51,12 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                             Id = 1,
                             PhoneNumber = "+359888888888",
                             UserId = "dea12856-c198-4129-b3f3-b893d8395082"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            PhoneNumber = "+359123456789",
+                            UserId = "586513cb-2bad-4ea3-ae33-7b8954efb167"
                         });
                 });
 
@@ -256,7 +262,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd07f267-629a-4d11-9e8b-28217f76e78b",
+                            ConcurrencyStamp = "231206d6-b2e9-4719-8c72-fbc834390f13",
                             Email = "agent@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Linda",
@@ -264,9 +270,9 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "agent@mail.com",
                             NormalizedUserName = "agent@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIIqQDJzWudSXWhvo6Ou/Zk5viId0aENPf8Dt730CMwk5tqlI9Eqb79stXKfUJfLuQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOUlG+VfMb57RSt8CG8QuesYeDrnS1TNBPnlnNAsrICmczMcihHH4b2XNRCzLtfAzA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7571c0c7-2735-4486-9a05-eb9b44ded46b",
+                            SecurityStamp = "75091eed-dbab-41ff-9420-b6df95b01189",
                             TwoFactorEnabled = false,
                             UserName = "agent@mail.com"
                         },
@@ -274,7 +280,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "af722ef4-6a97-4390-b61b-bdc917a52023",
+                            ConcurrencyStamp = "c779e6f8-fc8f-4e7a-bb86-f694f0bb44a6",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Teodor",
@@ -282,11 +288,29 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAECuMbFlsGHhZi3r3DwufmndiZKHisapo5D3xLm+m82EaCq2RQFn0PGPFgI9QvHz83w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMy1PgY3K75tBqxdGr9QvknQ6UzDuyU4L7UbeKSfs+ejZGf+h9JQwH2G6RuQKXQ4XA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ffb9c620-7700-4ed8-ad28-54ef9c2d2649",
+                            SecurityStamp = "f7555627-1259-40ed-b735-b898359f5a8a",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
+                        },
+                        new
+                        {
+                            Id = "586513cb-2bad-4ea3-ae33-7b8954efb167",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "15f0cdcf-50f2-4ac7-9979-23634b9d5971",
+                            Email = "admin@mail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Great",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "admin@mail.com",
+                            NormalizedUserName = "admin@mail.com",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH0bRnM5/wd2c3kUX9jdWT5TNrzbHHa8j7JDCgsD+rtJy4tlWFDhGVPDcjAPybikIA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "e37bc2a4-8664-4271-909c-c8ad22af65be",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@mail.com"
                         });
                 });
 

@@ -17,7 +17,7 @@ namespace HouseRentingSystem.Infrastructure.Data.Configuration
 
             var hasher = new PasswordHasher<User>();
 
-            var user1 = new User()
+            var user = new User()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "agent@mail.com",
@@ -28,11 +28,11 @@ namespace HouseRentingSystem.Infrastructure.Data.Configuration
                 LastName = "Michaels"
             };
 
-            user1.PasswordHash = hasher.HashPassword(user1, "agent123");
+            user.PasswordHash = hasher.HashPassword(user, "agent123");
 
-            users.Add(user1);
+            users.Add(user);
 
-            var user2 = new User()
+            user = new User()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest@mail.com",
@@ -43,9 +43,24 @@ namespace HouseRentingSystem.Infrastructure.Data.Configuration
                 LastName = "Leslie"
             };
 
-            user2.PasswordHash = hasher.HashPassword(user2, "guest123");
+            user.PasswordHash = hasher.HashPassword(user, "guest123");
 
-            users.Add(user2);
+            users.Add(user);
+
+            user = new User()
+            {
+                Id = "586513cb-2bad-4ea3-ae33-7b8954efb167",
+                Email = "admin@mail.com",
+                NormalizedEmail = "admin@mail.com",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "admin@mail.com",
+                FirstName = "Great",
+                LastName = "Admin"
+            };
+
+            user.PasswordHash = hasher.HashPassword(user, "admin123");
+
+            users.Add(user);
 
             return users;
         }
