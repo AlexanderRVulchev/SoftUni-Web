@@ -15,15 +15,18 @@
     public class HouseService : IHouseService
     {
         private readonly IRepository repo;
+        private readonly IUserService users;
 
         private readonly IGuard guard;
 
         public HouseService(
             IRepository _repo,
-            IGuard _guard)
+            IGuard _guard,
+            IUserService _users)
         {
             this.repo = _repo;
             this.guard = _guard;
+            this.users = _users;
         }
 
         public async Task<HouseQueryModel> All(
@@ -112,7 +115,6 @@
             })
             .ToArrayAsync();
 
-
         public async Task<IEnumerable<HouseServiceModel>> AllHousesByUserId(string userId)
              => await repo.All<House>()
             .Where(c => c.RenterId == userId)
@@ -186,7 +188,6 @@
         public async Task<int> GetHouseCategoryId(int houseId)
             => (await repo.GetByIdAsync<House>(houseId)).CategoryId;
 
-
         public async Task<bool> HasAgentWithId(int houseId, string currentUserId)
         {
             var house = await repo.AllReadonly<House>()
@@ -218,7 +219,8 @@
                     Agent = new AgentServiceModel
                     {
                         Email = h.Agent.User.Email,
-                        PhoneNumber = h.Agent.User.PhoneNumber
+                        PhoneNumber = h.Agent.User.PhoneNumber,
+                        FullName = h.Agent.User.FirstName + " " + h.Agent.User.LastName
                     }
                 })
                 .FirstAsync();
