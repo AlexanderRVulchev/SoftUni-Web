@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Data;
 using HouseRentingSystem.ModelBinders;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
