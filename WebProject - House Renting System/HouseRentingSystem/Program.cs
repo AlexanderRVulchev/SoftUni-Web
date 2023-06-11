@@ -5,7 +5,7 @@ using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Data;
 using HouseRentingSystem.ModelBinders;
 using Microsoft.AspNetCore.Identity;
-
+using HouseRentingSystem.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,8 +73,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
     endpoints.MapRazorPages();
 });
-
-
+app.SeedAdmin();
 //app.MapRazorPages();
-
 app.Run();
