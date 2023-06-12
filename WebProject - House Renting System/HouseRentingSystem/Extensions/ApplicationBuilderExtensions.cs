@@ -17,10 +17,10 @@ namespace HouseRentingSystem.Extensions
 
             Task.Run(async () =>
             {
-                //if (await roleManager.RoleExistsAsync("Administrator"))
-                //{
-                //    return;
-                //}
+                if (await roleManager.RoleExistsAsync("Administrator"))
+                {
+                    return;
+                }
 
                 var role = new IdentityRole("Administrator");
 

@@ -132,7 +132,8 @@ namespace HouseRentingSystem.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await houseService.HasAgentWithId(id, User.Id()))
+            if (!await houseService.HasAgentWithId(id, User.Id())
+                && !User.IsAdmin())
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
@@ -165,7 +166,8 @@ namespace HouseRentingSystem.Controllers
                 return View(model);
             }
 
-            if (!await houseService.HasAgentWithId(id, User.Id()))
+            if (!await houseService.HasAgentWithId(id, User.Id())
+                && !User.IsAdmin())
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
@@ -198,7 +200,8 @@ namespace HouseRentingSystem.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await houseService.HasAgentWithId(id, User.Id()))
+            if (!await houseService.HasAgentWithId(id, User.Id()) 
+                && !User.IsAdmin())
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
@@ -223,7 +226,8 @@ namespace HouseRentingSystem.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await houseService.HasAgentWithId(model.Id, User.Id()))
+            if (!await houseService.HasAgentWithId(model.Id, User.Id())
+                && !User.IsAdmin())
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
@@ -246,7 +250,8 @@ namespace HouseRentingSystem.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (await agentService.ExistsById(User.Id()))
+            if (await agentService.ExistsById(User.Id())
+                && !User.IsAdmin())
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
